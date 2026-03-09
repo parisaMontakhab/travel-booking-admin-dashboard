@@ -39,7 +39,7 @@ export default function SignInViewPage({ stars }: { stars: number }) {
           >
             <path d='M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3' />
           </svg>
-          Logo
+          Voyana
         </div>
         <InteractiveGridPattern
           className={cn(
@@ -50,11 +50,10 @@ export default function SignInViewPage({ stars }: { stars: number }) {
         <div className='relative z-20 mt-auto'>
           <blockquote className='space-y-2'>
             <p className='text-lg'>
-              &ldquo;This starter template has saved me countless hours of work
-              and helped me deliver projects to my clients faster than ever
-              before.&rdquo;
+              &ldquo;Manage bookings, customers, and travel operations from one
+              clean and modern dashboard.&rdquo;
             </p>
-            <footer className='text-sm'>Random Dude</footer>
+            <footer className='text-sm'>Voyana Admin</footer>
           </blockquote>
         </div>
       </div>
@@ -64,7 +63,7 @@ export default function SignInViewPage({ stars }: { stars: number }) {
           <Link
             className={cn('group inline-flex hover:text-yellow-200')}
             target='_blank'
-            href={'https://github.com/kiranism/next-shadcn-dashboard-starter'}
+            href={'https://github.com/parisaMontakhab/travel-booking-dashboard'}
           >
             <div className='flex items-center'>
               <GitHubLogoIcon className='size-4' />
@@ -85,18 +84,14 @@ export default function SignInViewPage({ stars }: { stars: number }) {
           />
           <div className='text-muted-foreground space-y-2 px-8 text-center text-xs'>
             <p>
-              This is an{' '}
-              <Link
-                href='/about'
-                className='hover:text-primary underline underline-offset-4'
-              >
-                open-source project
-              </Link>{' '}
-              for demo purposes. Authentication is handled securely by Clerk.
+              This project is a portfolio demo for a travel booking admin
+              dashboard built with Next.js and TypeScript.
             </p>
             <p>
               <Link
-                href='https://github.com/kiranism/next-shadcn-dashboard-starter'
+                href={
+                  'https://github.com/parisaMontakhab/travel-booking-dashboard'
+                }
                 target='_blank'
                 className='hover:text-primary underline underline-offset-4'
               >
