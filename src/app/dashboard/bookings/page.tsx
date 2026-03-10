@@ -1,3 +1,4 @@
+import { getBookings } from '@/services/bookings';
 import { Booking } from '@/types/booking';
 
 const getStatusClasses = (status: Booking['status']) => {
@@ -14,10 +15,7 @@ const getStatusClasses = (status: Booking['status']) => {
 };
 
 export default async function BookingsPage() {
-  const res = await fetch('http://localhost:3000/api/bookings', {
-    cache: 'no-store'
-  });
-  const bookings: Booking[] = await res.json();
+  const bookings: Booking[] = await getBookings();
 
   return (
     <div className='space-y-6 p-6'>
