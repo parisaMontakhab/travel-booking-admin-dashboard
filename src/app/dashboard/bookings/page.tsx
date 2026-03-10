@@ -1,61 +1,12 @@
-type Booking = {
-  id: number;
-  customer: string;
-  destination: string;
-  date: string;
-  status: 'Confirmed' | 'Pending' | 'Cancelled';
-  price: number;
-};
-
-const bookings: Booking[] = [
-  {
-    id: 1,
-    customer: 'Olivia Martin',
-    destination: 'Paris',
-    date: '2026-05-12',
-    status: 'Confirmed',
-    price: 1200
-  },
-  {
-    id: 2,
-    customer: 'Jackson Lee',
-    destination: 'Rome',
-    date: '2026-05-15',
-    status: 'Pending',
-    price: 980
-  },
-  {
-    id: 3,
-    customer: 'Isabella Nguyen',
-    destination: 'Barcelona',
-    date: '2026-05-18',
-    status: 'Cancelled',
-    price: 760
-  },
-  {
-    id: 4,
-    customer: 'William Kim',
-    destination: 'Amsterdam',
-    date: '2026-05-20',
-    status: 'Confirmed',
-    price: 1430
-  },
-  {
-    id: 5,
-    customer: 'Sofia Davis',
-    destination: 'Vienna',
-    date: '2026-05-24',
-    status: 'Pending',
-    price: 890
-  }
-];
+import { bookingMockData } from '@/mock/bookingMockData';
+import { Booking } from '@/types/booking';
 
 const getStatusClasses = (status: Booking['status']) => {
   switch (status) {
     case 'Confirmed':
       return 'bg-green-100 text-green-700';
     case 'Pending':
-      return 'bg-yellow-100 text-yellow-700';
+      return 'bg-yellow-100 text-yellow-700 px-4';
     case 'Cancelled':
       return 'bg-red-100 text-red-700';
     default:
@@ -64,6 +15,7 @@ const getStatusClasses = (status: Booking['status']) => {
 };
 
 export default function BookingsPage() {
+  const bookings = bookingMockData;
   return (
     <div className='space-y-6 p-6'>
       <div>
