@@ -1,4 +1,3 @@
-import { bookingMockData } from '@/mock/bookingMockData';
 import { Booking } from '@/types/booking';
 
 const getStatusClasses = (status: Booking['status']) => {
@@ -14,8 +13,12 @@ const getStatusClasses = (status: Booking['status']) => {
   }
 };
 
-export default function BookingsPage() {
-  const bookings = bookingMockData;
+export default async function BookingsPage() {
+  const res = await fetch('http://localhost:3000/api/bookings', {
+    cache: 'no-store'
+  });
+  const bookings: Booking[] = await res.json();
+
   return (
     <div className='space-y-6 p-6'>
       <div>
