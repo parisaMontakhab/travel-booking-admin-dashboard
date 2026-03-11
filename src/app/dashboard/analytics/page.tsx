@@ -1,3 +1,4 @@
+import RevenueChart from '@/features/analytics/components/ revenue-chart';
 import { getBookings } from '@/services/bookings';
 import { getCustomers } from '@/services/customers';
 
@@ -45,7 +46,7 @@ async function AnalyticsPage() {
         <p className='text-muted-foreground mb-2 text-sm'>Revenue overview</p>
 
         <div className='text-muted-foreground flex h-64 items-center justify-center'>
-          Chart will go here
+          <RevenueChart />
         </div>
       </div>
     </div>
