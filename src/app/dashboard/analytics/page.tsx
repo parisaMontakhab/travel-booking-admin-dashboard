@@ -1,4 +1,18 @@
-function AnalyticsPage() {
+import { getBookings } from '@/services/bookings';
+import { getCustomers } from '@/services/customers';
+
+async function AnalyticsPage() {
+  const bookings = await getBookings();
+  const customers = await getCustomers();
+
+  const totalBookings = bookings.length;
+  const totalCustomers = customers.length;
+
+  const totalRevenue = bookings.reduce(
+    (sum, booking) => sum + booking.price,
+    0
+  );
+
   return (
     <div className='space-y-6 p-6'>
       <div>
@@ -12,17 +26,17 @@ function AnalyticsPage() {
       <div className='grid gap-4 md:grid-cols-3'>
         <div className='bg-background rounded-xl border p-4'>
           <p className='text-muted-foreground text-sm'>Total Revenue</p>
-          <p className='text-2xl font-bold'>$12,450</p>
+          <p className='text-2xl font-bold'>${totalRevenue}</p>
         </div>
 
         <div className='bg-background rounded-xl border p-4'>
           <p className='text-muted-foreground text-sm'>Total Bookings</p>
-          <p className='text-2xl font-bold'>23</p>
+          <p className='text-2xl font-bold'>{totalBookings}</p>
         </div>
 
         <div className='bg-background rounded-xl border p-4'>
           <p className='text-muted-foreground text-sm'>Customers</p>
-          <p className='text-2xl font-bold'>15</p>
+          <p className='text-2xl font-bold'>{totalCustomers}</p>
         </div>
       </div>
 
