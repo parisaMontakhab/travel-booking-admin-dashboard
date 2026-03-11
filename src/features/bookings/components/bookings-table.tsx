@@ -1,4 +1,6 @@
+'use client';
 import { Booking } from '@/types/booking';
+import { useMemo, useState } from 'react';
 
 interface Props {
   bookings: Booking[];
@@ -18,39 +20,74 @@ const getStatusClasses = (status: Booking['status']) => {
 };
 
 export function BookingsTable({ bookings }: Props) {
-  return (
-    <div className='bg-background overflow-hidden rounded-xl border'>
-      <table className='w-full text-sm'>
-        <thead className='bg-muted/50'>
-          <tr className='text-left'>
-            <th className='px-4 py-3 font-medium'>Customer</th>
-            <th className='px-4 py-3 font-medium'>Destination</th>
-            <th className='px-4 py-3 font-medium'>Date</th>
-            <th className='px-4 py-3 font-medium'>Status</th>
-            <th className='px-4 py-3 font-medium'>Price</th>
-          </tr>
-        </thead>
+  const [searchValue, setSearchValue] = useState('');
 
-        <tbody>
-          {bookings.map((booking) => (
-            <tr key={booking.id} className='border-t'>
-              <td className='px-4 py-3 font-medium'>{booking.customer}</td>
-              <td className='px-4 py-3'>{booking.destination}</td>
-              <td className='px-4 py-3'>{booking.date}</td>
-              <td className='px-4 py-3'>
-                <span
-                  className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${getStatusClasses(
-                    booking.status
-                  )}`}
-                >
-                  {booking.status}
-                </span>
-              </td>
-              <td className='px-4 py-3'>${booking.price}</td>
+  const filteredBookings = useMemo(() => {
+    const normalizedSearch = searchValue.toLowerCase().trim();
+    if (!normalizedSearch) return bookings;
+
+    return bookings.filter((booking) => {
+      return (
+        booking.customer.toLowerCase().includes(normalizedSearch) ||
+        booking.destination.toLowerCase().includes(normalizedSearch)
+      );
+    });
+  }, [bookings, searchValue]);
+
+  return (
+    <div className='space-y-4'>
+      <div>
+        <input
+          type='text'
+          placeholder='Search by customer or destination...'
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          className='bg-background w-full max-w-sm rounded-md border px-3 py-2 text-sm outline-none focus:ring-1'
+        />
+      </div>
+      <div className='bg-background overflow-hidden rounded-xl border'>
+        <table className='w-full text-sm'>
+          <thead className='bg-muted/50'>
+            <tr className='text-left'>
+              <th className='px-4 py-3 font-medium'>Customer</th>
+              <th className='px-4 py-3 font-medium'>Destination</th>
+              <th className='px-4 py-3 font-medium'>Date</th>
+              <th className='px-4 py-3 font-medium'>Status</th>
+              <th className='px-4 py-3 font-medium'>Price</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {filteredBookings.map((booking) => (
+              <tr key={booking.id} className='border-t'>
+                <td className='px-4 py-3 font-medium'>{booking.customer}</td>
+                <td className='px-4 py-3'>{booking.destination}</td>
+                <td className='px-4 py-3'>{booking.date}</td>
+                <td className='px-4 py-3'>
+                  <span
+                    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${getStatusClasses(
+                      booking.status
+                    )}`}
+                  >
+                    {booking.status}
+                  </span>
+                </td>
+                <td className='px-4 py-3'>${booking.price}</td>
+              </tr>
+            ))}
+            {filteredBookings.length === 0 && (
+              <tr>
+                <td
+                  colSpan={5}
+                  className='text-muted-foreground px-4 py-6 text-center'
+                >
+                  No bookings found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
