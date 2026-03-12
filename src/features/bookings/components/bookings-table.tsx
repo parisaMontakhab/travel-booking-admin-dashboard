@@ -1,5 +1,6 @@
 'use client';
 import { Booking } from '@/types/booking';
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
 interface Props {
@@ -60,7 +61,12 @@ export function BookingsTable({ bookings }: Props) {
           <tbody>
             {filteredBookings.map((booking) => (
               <tr key={booking.id} className='border-t'>
-                <td className='px-4 py-3 font-medium'>{booking.customer}</td>
+                <td className='px-4 py-3 font-medium'>
+                  {' '}
+                  <Link href={`/dashboard/bookings/${booking.id}`}>
+                    {booking.customer}
+                  </Link>
+                </td>
                 <td className='px-4 py-3'>{booking.destination}</td>
                 <td className='px-4 py-3'>{booking.date}</td>
                 <td className='px-4 py-3'>
