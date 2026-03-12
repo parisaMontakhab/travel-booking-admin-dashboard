@@ -1,3 +1,4 @@
+import BookingStatusChart from '@/features/analytics/components/ booking-status-chart';
 import RevenueChart from '@/features/analytics/components/ revenue-chart';
 import { getBookings } from '@/services/bookings';
 import { getCustomers } from '@/services/customers';
@@ -44,10 +45,15 @@ async function AnalyticsPage() {
       {/* Chart placeholder */}
       <div className='bg-background rounded-xl border p-6'>
         <p className='text-muted-foreground mb-2 text-sm'>Revenue overview</p>
-
         <div className='text-muted-foreground flex h-64 items-center justify-center'>
           <RevenueChart />
         </div>
+      </div>
+
+      {/* Booking status */}
+      <div className='bg-background rounded-xl border p-6'>
+        <p className='text-muted-foreground mb-2 text-sm'>Booking Status</p>
+        <BookingStatusChart />
       </div>
     </div>
   );
