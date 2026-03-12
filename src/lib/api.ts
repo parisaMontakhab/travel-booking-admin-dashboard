@@ -1,12 +1,12 @@
 export async function apiFetch<T>(
   endpoint: string,
-  options?: RequestInit
+  options: RequestInit = {}
 ): Promise<T> {
   const response = await fetch(endpoint, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
-      ...(options?.headers || {})
+      ...(options.headers || {})
     }
   });
 
