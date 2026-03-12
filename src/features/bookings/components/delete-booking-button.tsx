@@ -1,6 +1,8 @@
-type Props = {
+'use client';
+
+interface Props {
   bookingId: number;
-};
+}
 
 export function DeleteBookingButton({ bookingId }: Props) {
   return (
