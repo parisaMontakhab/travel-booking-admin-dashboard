@@ -23,3 +23,9 @@ export function updateBooking(id: number | string, data: CreateBookingPayload) {
     body: JSON.stringify(data)
   });
 }
+
+export function deleteBooking(id: number | string) {
+  return apiFetch(`${API_ROUTES.BOOKINGS}/${id}`, {
+    method: 'DELETE'
+  });
+}
