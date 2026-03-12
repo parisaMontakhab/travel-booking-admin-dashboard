@@ -36,20 +36,3 @@ export async function PUT(
 
   return NextResponse.json(bookingMockData[bookingIndex]);
 }
-
-export async function DELETE(
-  _request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const { id } = await params;
-
-  const bookingIndex = bookingMockData.findIndex((b) => b.id === Number(id));
-
-  if (bookingIndex === -1) {
-    return NextResponse.json({ message: 'Booking not found' }, { status: 404 });
-  }
-
-  const deletedBooking = bookingMockData.splice(bookingIndex, 1);
-
-  return NextResponse.json(deletedBooking[0]);
-}

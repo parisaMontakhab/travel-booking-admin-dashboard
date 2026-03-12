@@ -14,6 +14,7 @@ export default async function BookingDetailsPage({
 
   const booking = bookings.find((b) => b.id === Number(id));
 
+  console.log(booking?.id, 'this is id');
   if (!booking) {
     return <div className='p-6'>Booking not found</div>;
   }
@@ -30,7 +31,7 @@ export default async function BookingDetailsPage({
             Edit
           </Link>
 
-          <DeleteBookingButton bookingId={booking.id} />
+          <DeleteBookingButton bookingId={booking?.id} />
         </div>
       </div>
 
