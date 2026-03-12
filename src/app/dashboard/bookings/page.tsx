@@ -8,14 +8,13 @@ export default async function BookingsPage() {
 
   return (
     <div className='space-y-6 p-6'>
-      <div>
-        <h1 className='text-2xl font-bold tracking-tight'>Bookings</h1>
-        <p className='text-muted-foreground'>
-          Manage and track all travel bookings.
-        </p>
-      </div>
       <div className='flex items-center justify-between'>
-        <h1 className='text-2xl font-bold'>Bookings</h1>
+        <div>
+          <h1 className='text-2xl font-bold'>Bookings</h1>
+          <p className='text-muted-foreground'>
+            Manage and track all travel bookings.
+          </p>
+        </div>
 
         <Link
           href='/dashboard/bookings/new'

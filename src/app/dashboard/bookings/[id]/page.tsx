@@ -1,5 +1,6 @@
 import { getBookings } from '@/services/bookings';
 import { Booking } from '@/types/booking';
+import Link from 'next/link';
 
 export default async function BookingDetailsPage({
   params
@@ -18,7 +19,16 @@ export default async function BookingDetailsPage({
 
   return (
     <div className='space-y-6 p-6'>
-      <h1 className='text-2xl font-bold'>Booking #{booking.id}</h1>
+      <div className='flex items-center justify-between'>
+        <h1 className='text-2xl font-bold'>Booking #{booking.id}</h1>
+
+        <Link
+          href={`/dashboard/bookings/${booking.id}/edit`}
+          className='rounded-lg bg-black px-4 py-2 text-white'
+        >
+          Edit Booking
+        </Link>
+      </div>
 
       <div className='space-y-4 rounded-xl border p-6'>
         <div>

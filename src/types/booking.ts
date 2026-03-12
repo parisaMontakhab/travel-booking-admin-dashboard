@@ -8,3 +8,11 @@ export type Booking = {
   status: BookingStatus;
   price: number;
 };
+
+export type CreateBookingPayload = {
+  customer: string;
+  destination: string;
+  date: string;
+  price: number;
+  status: 'Confirmed' | 'Pending' | 'Cancelled';
+};
