@@ -1,25 +1,23 @@
 import { API_ROUTES } from '@/constants/api-routes';
-import { apiFetch } from '@/lib/api';
+import { apiDelete, apiGet, apiPost, apiPut } from '@/lib/api';
 import { Booking, CreateBookingPayload } from '@/types/booking';
 
 export function getBookings() {
-  return apiFetch<Booking[]>(API_ROUTES.BOOKINGS);
+  return apiGet<Booking[]>(API_ROUTES.BOOKINGS.BASE);
 }
 
 export function getBookingById(id: number | string) {
-  return apiFetch<Booking>(`${API_ROUTES.BOOKINGS}/${id}`);
+  return apiGet<Booking>(API_ROUTES.BOOKINGS.byId(id));
 }
 
 export function createBooking(data: CreateBookingPayload) {
-  return apiFetch<Booking>(API_ROUTES.BOOKINGS, {
-    method: 'POST',
-    body: JSON.stringify(data)
-  });
+  return apiPost<Booking>(API_ROUTES.BOOKINGS.BASE, data);
 }
 
 export function updateBooking(id: number | string, data: CreateBookingPayload) {
-  return apiFetch<Booking>(`${API_ROUTES.BOOKINGS}/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data)
-  });
+  return apiPut<Booking>(API_ROUTES.BOOKINGS.byId(id), data);
+}
+
+export function deleteBooking(id: number | string) {
+  return apiDelete<Booking>(API_ROUTES.BOOKINGS.byId(id));
 }

@@ -1,4 +1,10 @@
 export const API_ROUTES = {
-  BOOKINGS: 'http://localhost:3000/api/bookings',
-  CUSTOMERS: 'http://localhost:3000/api/customers'
-};
+  BOOKINGS: {
+    BASE: '/bookings',
+    byId: (id: number | string) => `/bookings/${id}`
+  },
+  CUSTOMERS: {
+    BASE: '/customers',
+    byId: (id: number | string) => `/customers/${id}`
+  }
+} as const;
