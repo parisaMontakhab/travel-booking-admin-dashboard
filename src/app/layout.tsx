@@ -1,9 +1,11 @@
-import Providers from '@/components/layout/providers';
-import { Toaster } from '@/components/ui/sonner';
+import { ActiveThemeProvider } from '@/components/themes/active-theme';
 import { fontVariables } from '@/components/themes/font.config';
-import { DEFAULT_THEME } from '@/components/themes/theme.config';
 import ThemeProvider from '@/components/themes/theme-provider';
+import { DEFAULT_THEME } from '@/components/themes/theme.config';
+import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
+import { ReactQueryProvider } from '@/providers/react-query-provider';
+import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata, Viewport } from 'next';
 import { cookies } from 'next/headers';
 import NextTopLoader from 'nextjs-toploader';
@@ -40,7 +42,6 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                // Set meta theme color
                 if (localStorage.theme === 'dark' || ((!('theme' in localStorage) || localStorage.theme === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '${META_THEME_COLORS.dark}')
                 }
@@ -55,21 +56,25 @@ export default async function RootLayout({
           fontVariables
         )}
       >
-        <NextTopLoader color='var(--primary)' showSpinner={false} />
-        <NuqsAdapter>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-            enableColorScheme
-          >
-            <Providers activeThemeValue={themeToApply}>
-              <Toaster />
-              {children}
-            </Providers>
-          </ThemeProvider>
-        </NuqsAdapter>
+        <ClerkProvider>
+          <NuqsAdapter>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+              enableColorScheme
+            >
+              <ActiveThemeProvider initialTheme={themeToApply}>
+                <ReactQueryProvider>
+                  <NextTopLoader color='var(--primary)' showSpinner={false} />
+                  <Toaster />
+                  {children}
+                </ReactQueryProvider>
+              </ActiveThemeProvider>
+            </ThemeProvider>
+          </NuqsAdapter>
+        </ClerkProvider>
       </body>
     </html>
   );
