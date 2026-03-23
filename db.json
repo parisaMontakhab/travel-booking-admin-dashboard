@@ -1,20 +1,21 @@
 {
   "bookings": [
     {
-      "id": 1,
       "customer": "Olivia Martin",
       "destination": "Paris",
       "date": "2026-05-12",
-      "status": "Confirmed",
-      "price": 1200
+      "price": 1200,
+      "status": "Pending",
+      "id": "1"
     },
     {
-      "id": 2,
-      "customer": "Jackson Lee",
+      "customer": "parisa",
       "destination": "Rome",
-      "date": "2026-05-15",
-      "status": "Pending",
-      "price": 980
+      "date": "2026-04-01",
+      "price": 250,
+      "status": "Confirmed",
+      "id": "N4jMLPYLXtg"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

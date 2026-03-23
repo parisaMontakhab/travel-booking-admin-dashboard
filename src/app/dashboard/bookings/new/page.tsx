@@ -1,16 +1,19 @@
 'use client';
 
+import { ROUTES } from '@/constants/routes';
 import {
   CreateBookingForm,
   createBookingSchema
 } from '@/features/bookings/schema';
 import { createBooking } from '@/services/bookings';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 export default function NewBookingPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -27,9 +30,16 @@ export default function NewBookingPage() {
     }
   });
 
-  const onSubmit = async (data: CreateBookingForm) => {
-    await createBooking(data);
-    router.push('/dashboard/bookings');
+  const { mutate } = useMutation({
+    mutationFn: (data: CreateBookingForm) => createBooking(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['bookings'] });
+      router.push(ROUTES.BOOKINGS.LIST);
+    }
+  });
+
+  const onSubmit = (data: CreateBookingForm) => {
+    mutate(data);
   };
 
   return (

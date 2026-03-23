@@ -1,4 +1,5 @@
 'use client';
+import { ROUTES } from '@/constants/routes';
 import { Booking } from '@/types/booking';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
@@ -63,7 +64,7 @@ export function BookingsTable({ bookings }: Props) {
               <tr key={booking.id} className='border-t'>
                 <td className='px-4 py-3 font-medium'>
                   {' '}
-                  <Link href={`/dashboard/bookings/${booking.id}`}>
+                  <Link href={ROUTES.BOOKINGS.DETAIL(booking.id)}>
                     {booking.customer}
                   </Link>
                 </td>

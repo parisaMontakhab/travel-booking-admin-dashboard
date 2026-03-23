@@ -1,19 +1,21 @@
 'use client';
 
+import { ROUTES } from '@/constants/routes';
 import {
   CreateBookingForm,
   createBookingSchema
 } from '@/features/bookings/schema';
 import { getBookingById, updateBooking } from '@/services/bookings';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-function EditBookingPage({ params }: { params: Promise<{ id: string }> }) {
+function EditBookingPage() {
+  const { id } = useParams() as { id: string };
   const router = useRouter();
-  const [bookingId, setBookingId] = useState('');
-  const [isLoadingBooking, setIsLoadingBooking] = useState(true);
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -31,42 +33,47 @@ function EditBookingPage({ params }: { params: Promise<{ id: string }> }) {
     }
   });
 
+  const {
+    data: booking,
+    isLoading,
+    error
+  } = useQuery({
+    queryKey: ['bookingDetail', id],
+    queryFn: () => getBookingById(id),
+    enabled: !!id
+  });
+
   useEffect(() => {
-    async function loadBooking() {
-      const { id } = await params;
-      setBookingId(id);
-
-      try {
-        const booking = await getBookingById(id);
-
-        reset({
-          customer: booking.customer,
-          destination: booking.destination,
-          date: booking.date,
-          price: booking.price,
-          status: booking.status
-        });
-      } catch (error) {
-        console.error('Failed to load booking', error);
-      } finally {
-        setIsLoadingBooking(false);
-      }
+    if (booking) {
+      reset({
+        customer: booking.customer,
+        destination: booking.destination,
+        date: booking.date,
+        price: booking.price,
+        status: booking.status
+      });
     }
+  }, [booking, reset]);
 
-    loadBooking();
-  }, [params, reset]);
+  const { mutate } = useMutation({
+    mutationFn: (data: CreateBookingForm) => updateBooking(id, data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['bookings'] });
+      await queryClient.invalidateQueries({ queryKey: ['bookingDetail', id] });
+      router.push(ROUTES.BOOKINGS.DETAIL(id));
+    }
+  });
 
   const onSubmit = async (data: CreateBookingForm) => {
-    try {
-      await updateBooking(bookingId, data);
-      router.push(`/dashboard/bookings/${bookingId}`);
-    } catch (error) {
-      console.error('Failed to update booking', error);
-    }
+    mutate(data);
   };
 
-  if (isLoadingBooking) {
-    return <div className='p-6'>Loading booking...</div>;
+  if (isLoading) {
+    return <div className='p-6'>Loading booking...</div>; //TODO: implement correct component
+  }
+
+  if (error || !booking) {
+    return <div className='p-6'>Booking not found</div>; //TODO: implement correct component
   }
 
   return (

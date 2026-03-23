@@ -1,31 +1,42 @@
+'use client';
+import { ROUTES } from '@/constants/routes';
 import { DeleteBookingButton } from '@/features/bookings/components/delete-booking-button';
-import { getBookings } from '@/services/bookings';
-import { Booking } from '@/types/booking';
+import { getBookingById } from '@/services/bookings';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
-export default async function BookingDetailsPage({
-  params
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+export default function BookingDetailsPage() {
+  const { id } = useParams() as { id: string };
 
-  const bookings: Booking[] = await getBookings();
+  const {
+    data: booking,
+    isLoading,
+    isError
+  } = useQuery({
+    queryKey: ['bookingDetail', id],
+    queryFn: () => getBookingById(id ?? ''),
+    enabled: !!id
+  });
 
-  const booking = bookings.find((b) => b.id === Number(id));
-
-  console.log(booking?.id, 'this is id');
-  if (!booking) {
-    return <div className='p-6'>Booking not found</div>;
+  if (isLoading) {
+    return <div className='p-6'>Loading booking...</div>; //TODO: implement correct component
   }
 
+  if (isError) {
+    return <div className='p-6'>Error loading booking</div>; //TODO: implement correct component
+  }
+
+  if (!booking) {
+    return <div className='p-6'>Booking not found</div>; //TODO: implement correct component
+  }
   return (
     <div className='space-y-6 p-6'>
       <div className='flex items-center justify-between'>
         <h1 className='text-2xl font-bold'>Booking #{booking.id}</h1>
         <div className='flex gap-3'>
           <Link
-            href={`/dashboard/bookings/${booking.id}/edit`}
+            href={ROUTES.BOOKINGS.EDIT(booking.id)}
             className='rounded-lg bg-black px-6 py-2 text-white'
           >
             Edit
