@@ -1,4 +1,6 @@
+import { ROUTES } from '@/constants/routes';
 import { Customer } from '@/types/customer';
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
 interface Props {
@@ -44,7 +46,12 @@ function CustomersTable({ customers }: Props) {
           <tbody>
             {filteredCustomers.map((customer) => (
               <tr key={customer.id} className='border-t'>
-                <td className='px-4 py-3 font-medium'>{customer.name}</td>
+                <td className='px-4 py-3 font-medium'>
+                  <Link href={ROUTES.CUSTOMERS.DETAIL(customer.id)}>
+                    {customer.name}
+                  </Link>
+                </td>
+
                 <td className='px-4 py-3'>{customer.email}</td>
                 <td className='px-4 py-3'>{customer.phone}</td>
               </tr>

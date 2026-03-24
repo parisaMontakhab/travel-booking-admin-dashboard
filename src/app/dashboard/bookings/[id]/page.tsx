@@ -1,13 +1,15 @@
 'use client';
 import { ROUTES } from '@/constants/routes';
-import { DeleteBookingButton } from '@/features/bookings/components/delete-booking-button';
-import { getBookingById } from '@/services/bookings';
-import { useQuery } from '@tanstack/react-query';
+import { DeleteButton } from '@/features/bookings/components/delete-button';
+import { deleteBooking, getBookingById } from '@/services/bookings';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 export default function BookingDetailsPage() {
   const { id } = useParams() as { id: string };
+  const queryClient = useQueryClient();
+  const router = useRouter();
 
   const {
     data: booking,
@@ -18,6 +20,25 @@ export default function BookingDetailsPage() {
     queryFn: () => getBookingById(id ?? ''),
     enabled: !!id
   });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (id: number) => deleteBooking(id),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookings'] });
+      router.push(ROUTES.BOOKINGS.LIST);
+    }
+  });
+
+  const handleDelete = () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this booking?'
+    );
+
+    if (!confirmed) return;
+
+    mutate(Number(id));
+  };
 
   if (isLoading) {
     return <div className='p-6'>Loading booking...</div>; //TODO: implement correct component
@@ -42,7 +63,7 @@ export default function BookingDetailsPage() {
             Edit
           </Link>
 
-          <DeleteBookingButton bookingId={booking?.id} />
+          <DeleteButton onDelete={handleDelete} disabled={isPending} />
         </div>
       </div>
 
