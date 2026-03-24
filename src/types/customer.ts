@@ -5,3 +5,5 @@ export type Customer = {
   bookings: number;
   totalSpent: number;
 };
+
+export type CreateCustomerPayload = Omit<Customer, 'id'>;
