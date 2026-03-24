@@ -6,7 +6,8 @@ import { ROUTES } from '@/constants/routes';
 import {
   CreateCustomerForm,
   createCustomerSchema
-} from '@/features/bookings/schema';
+} from '@/features/customers/schema';
+
 import { getCustomerById, updateCustomer } from '@/services/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';

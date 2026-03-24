@@ -3,7 +3,8 @@ import { ROUTES } from '@/constants/routes';
 import {
   CreateCustomerForm,
   createCustomerSchema
-} from '@/features/bookings/schema';
+} from '@/features/customers/schema';
+
 import { createCustomer } from '@/services/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
