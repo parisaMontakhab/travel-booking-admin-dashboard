@@ -1,4 +1,7 @@
 'use client';
+import EmptyState from '@/components/states/EmptyState';
+import ErrorState from '@/components/states/ErrorState';
+import LoadingState from '@/components/states/LoadingState';
 import { ROUTES } from '@/constants/routes';
 import { DeleteButton } from '@/features/bookings/components/delete-button';
 import { deleteBooking, getBookingById } from '@/services/bookings';
@@ -41,16 +44,26 @@ export default function BookingDetailsPage() {
   };
 
   if (isLoading) {
-    return <div className='p-6'>Loading booking...</div>; //TODO: implement correct component
+    return <LoadingState title='Loading booking...' />;
   }
 
   if (isError) {
-    return <div className='p-6'>Error loading booking</div>; //TODO: implement correct component
+    return (
+      <ErrorState
+        title='Failed to load booking'
+        description='Please refresh the page and try again.'
+      />
+    );
   }
 
-  if (!booking) {
-    return <div className='p-6'>Booking not found</div>; //TODO: implement correct component
-  }
+  if (!booking)
+    return (
+      <EmptyState
+        title='No booking yet'
+        description='Create your first booking to get started.'
+      />
+    );
+
   return (
     <div className='space-y-6 p-6'>
       <div className='flex items-center justify-between'>

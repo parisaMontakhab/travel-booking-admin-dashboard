@@ -1,4 +1,7 @@
 'use client';
+import EmptyState from '@/components/states/EmptyState';
+import ErrorState from '@/components/states/ErrorState';
+import LoadingState from '@/components/states/LoadingState';
 import { ROUTES } from '@/constants/routes';
 import { BookingsTable } from '@/features/bookings/components/bookings-table';
 import { getBookings } from '@/services/bookings';
@@ -15,13 +18,23 @@ export default function BookingsPage() {
     queryFn: getBookings
   });
 
-  if (isLoading) {
-    return <div className='p-6'>Loading...</div>; //TODO: implement correct component
-  }
+  if (isLoading) return <LoadingState title='Loading bookings...' />;
 
-  if (isError) {
-    return <div className='p-6'>Error loading bookings</div>; //TODO: implement correct component
-  }
+  if (isError)
+    return (
+      <ErrorState
+        title='Failed to load bookings'
+        description='Please refresh the page and try again.'
+      />
+    );
+
+  if (!bookings?.length)
+    return (
+      <EmptyState
+        title='No bookings yet'
+        description='Create your first booking to get started.'
+      />
+    );
 
   return (
     <div className='space-y-6 p-6'>

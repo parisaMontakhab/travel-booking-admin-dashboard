@@ -1,4 +1,7 @@
 'use client';
+import EmptyState from '@/components/states/EmptyState';
+import ErrorState from '@/components/states/ErrorState';
+import LoadingState from '@/components/states/LoadingState';
 import { ROUTES } from '@/constants/routes';
 import CustomersTable from '@/features/customers/components/customers-table';
 import { getCustomers } from '@/services/customers';
@@ -15,9 +18,23 @@ function CustomersPage() {
     queryFn: getCustomers
   });
 
-  if (isLoading) return <div>Loading...</div>; //TODO: implement correct component
+  if (isLoading) return <LoadingState title='Loading customers...' />;
 
-  if (isError) return <div>Error loading customers</div>; //TODO: implement correct component
+  if (isError)
+    return (
+      <ErrorState
+        title='Failed to load customers'
+        description='Please refresh the page and try again.'
+      />
+    );
+
+  if (!customers?.length)
+    return (
+      <EmptyState
+        title='No customers yet'
+        description='Create your first customer to get started.'
+      />
+    );
 
   return (
     <div className='space-y-6 p-6'>

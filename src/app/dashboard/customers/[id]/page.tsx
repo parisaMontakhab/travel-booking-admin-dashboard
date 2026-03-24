@@ -1,4 +1,7 @@
 'use client';
+import EmptyState from '@/components/states/EmptyState';
+import ErrorState from '@/components/states/ErrorState';
+import LoadingState from '@/components/states/LoadingState';
 import { ROUTES } from '@/constants/routes';
 import { DeleteButton } from '@/features/bookings/components/delete-button';
 import { deleteCustomer, getCustomerById } from '@/services/customers';
@@ -41,15 +44,25 @@ export default function CustomerDetailsPage() {
   };
 
   if (isLoading) {
-    return <div className='p-6'>Loading Customer...</div>; //TODO: implement correct component
+    return <LoadingState title='Loading customer...' />;
   }
 
   if (isError) {
-    return <div className='p-6'>Error loading Customer</div>; //TODO: implement correct component
+    return (
+      <ErrorState
+        title='Failed to load customer'
+        description='Please refresh the page and try again.'
+      />
+    );
   }
 
   if (!customer) {
-    return <div className='p-6'>Customer not found</div>; //TODO: implement correct component
+    return (
+      <EmptyState
+        title='No customer yet'
+        description='Create your first booking to get started.'
+      />
+    );
   }
   return (
     <div className='space-y-6 p-6'>

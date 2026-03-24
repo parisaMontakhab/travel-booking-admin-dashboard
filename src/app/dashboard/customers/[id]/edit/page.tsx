@@ -1,4 +1,7 @@
 'use client';
+import EmptyState from '@/components/states/EmptyState';
+import ErrorState from '@/components/states/ErrorState';
+import LoadingState from '@/components/states/LoadingState';
 import { ROUTES } from '@/constants/routes';
 import {
   CreateCustomerForm,
@@ -33,7 +36,7 @@ export default function EditCustomerPage() {
   const {
     data: customer,
     isLoading,
-    error
+    isError
   } = useQuery({
     queryKey: ['customerDetail', id],
     queryFn: () => getCustomerById(id),
@@ -63,13 +66,23 @@ export default function EditCustomerPage() {
     mutate(data);
   };
 
-  if (isLoading) {
-    return <div className='p-6'>Loading customer...</div>; //TODO: implement correct component
-  }
+  if (isLoading) return <LoadingState title='Loading customer...' />;
 
-  if (error || !customer) {
-    return <div className='p-6'>customer not found</div>; //TODO: implement correct component
-  }
+  if (isError)
+    return (
+      <ErrorState
+        title='Failed to load customer'
+        description='Please refresh the page and try again.'
+      />
+    );
+
+  if (!customer)
+    return (
+      <EmptyState
+        title='No customer yet'
+        description='Create your first customer to get started.'
+      />
+    );
 
   return (
     <div className='max-w-xl space-y-6 p-6'>

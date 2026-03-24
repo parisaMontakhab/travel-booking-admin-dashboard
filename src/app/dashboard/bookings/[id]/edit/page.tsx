@@ -1,5 +1,8 @@
 'use client';
 
+import EmptyState from '@/components/states/EmptyState';
+import ErrorState from '@/components/states/ErrorState';
+import LoadingState from '@/components/states/LoadingState';
 import { ROUTES } from '@/constants/routes';
 import {
   CreateBookingForm,
@@ -36,7 +39,7 @@ function EditBookingPage() {
   const {
     data: booking,
     isLoading,
-    error
+    isError
   } = useQuery({
     queryKey: ['bookingDetail', id],
     queryFn: () => getBookingById(id),
@@ -68,13 +71,23 @@ function EditBookingPage() {
     mutate(data);
   };
 
-  if (isLoading) {
-    return <div className='p-6'>Loading booking...</div>; //TODO: implement correct component
-  }
+  if (isLoading) return <LoadingState title='Loading booking...' />;
 
-  if (error || !booking) {
-    return <div className='p-6'>Booking not found</div>; //TODO: implement correct component
-  }
+  if (isError)
+    return (
+      <ErrorState
+        title='Failed to load booking'
+        description='Please refresh the page and try again.'
+      />
+    );
+
+  if (!booking)
+    return (
+      <EmptyState
+        title='No booking yet'
+        description='Create your first booking to get started.'
+      />
+    );
 
   return (
     <div className='max-w-xl space-y-6 p-6'>
