@@ -1,9 +1,8 @@
-export type Customer = {
-  id: number;
+export interface Customer {
+  id: string;
   name: string;
   email: string;
-  bookings: number;
-  totalSpent: number;
-};
+  phone?: string;
+}
 
 export type CreateCustomerPayload = Omit<Customer, 'id'>;

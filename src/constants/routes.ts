@@ -10,6 +10,8 @@ export const ROUTES = {
 
   CUSTOMERS: {
     LIST: '/dashboard/customers',
-    NEW: '/dashboard/customers/new'
+    NEW: '/dashboard/customers/new',
+    DETAIL: (id: number | string) => `/dashboard/customers/${id}`,
+    EDIT: (id: number | string) => `/dashboard/customers/${id}/edit`
   }
 } as const;
