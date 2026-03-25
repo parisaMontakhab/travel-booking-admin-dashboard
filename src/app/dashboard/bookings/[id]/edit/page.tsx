@@ -10,6 +10,7 @@ import {
 } from '@/features/bookings/schema';
 import { useAppMutation } from '@/hooks/use-mutation';
 import { getBookingById, updateBooking } from '@/services/bookings';
+import { getCustomers } from '@/services/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
@@ -29,7 +30,7 @@ function EditBookingPage() {
   } = useForm<CreateBookingForm>({
     resolver: zodResolver(createBookingSchema),
     defaultValues: {
-      customer: '',
+      customerId: '',
       destination: '',
       date: '',
       price: 0,
@@ -39,18 +40,27 @@ function EditBookingPage() {
 
   const {
     data: booking,
-    isLoading,
-    isError
+    isLoading: isLoadingBookings,
+    isError: isErrorBookings
   } = useQuery({
     queryKey: ['bookingDetail', id],
     queryFn: () => getBookingById(id),
     enabled: !!id
   });
 
+  const {
+    data: customers = [],
+    isLoading: isLoadingCustomers,
+    isError: isErrorCustomers
+  } = useQuery({
+    queryKey: ['customers'],
+    queryFn: getCustomers
+  });
+
   useEffect(() => {
     if (booking) {
       reset({
-        customer: booking.customer,
+        customerId: booking.customerId,
         destination: booking.destination,
         date: booking.date,
         price: booking.price,
@@ -59,7 +69,7 @@ function EditBookingPage() {
     }
   }, [booking, reset]);
 
-  const { mutate: editBooking } = useAppMutation({
+  const { mutate: editBooking, isPending } = useAppMutation({
     mutationFn: (data: CreateBookingForm) => updateBooking(id, data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['bookings'] });
@@ -72,9 +82,10 @@ function EditBookingPage() {
     editBooking(data);
   };
 
-  if (isLoading) return <LoadingState title='Loading booking...' />;
+  if (isLoadingBookings || isLoadingCustomers)
+    return <LoadingState title='Loading booking...' />;
 
-  if (isError)
+  if (isErrorBookings || isErrorCustomers)
     return (
       <ErrorState
         title='Failed to load booking'
@@ -82,7 +93,7 @@ function EditBookingPage() {
       />
     );
 
-  if (!booking)
+  if (!booking || !customers.length)
     return (
       <EmptyState
         title='No booking yet'
@@ -96,13 +107,19 @@ function EditBookingPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
         <div>
-          <input
-            {...register('customer')}
-            placeholder='Customer'
+          <select
+            {...register('customerId')}
             className='w-full rounded-lg border p-2'
-          />
-          {errors.customer && (
-            <p className='text-sm text-red-500'>{errors.customer.message}</p>
+          >
+            <option value=''>Select a customer</option>
+            {customers.map((customer) => (
+              <option key={customer.id} value={customer.id}>
+                {customer.name} ({customer.email})
+              </option>
+            ))}
+          </select>
+          {errors.customerId && (
+            <p className='text-sm text-red-500'>{errors.customerId.message}</p>
           )}
         </div>
 
@@ -154,10 +171,11 @@ function EditBookingPage() {
         </div>
 
         <button
-          disabled={isSubmitting}
-          className='rounded-lg bg-black px-4 py-2 text-white'
+          type='submit'
+          disabled={isSubmitting || isPending}
+          className='rounded-lg bg-black px-4 py-2 text-white disabled:opacity-50'
         >
-          {isSubmitting ? 'Updating...' : 'Update Booking'}
+          {isPending ? 'Updating...' : 'Update Booking'}
         </button>
       </form>
     </div>

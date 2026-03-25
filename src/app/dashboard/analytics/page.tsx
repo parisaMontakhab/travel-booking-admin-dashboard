@@ -1,21 +1,8 @@
 import BookingStatusChart from '@/features/analytics/components/ booking-status-chart';
 import RevenueChart from '@/features/analytics/components/ revenue-chart';
 import TopDestinationsChart from '@/features/analytics/components/ top-destinations-chart';
-import { getBookings } from '@/services/bookings';
-import { getCustomers } from '@/services/customers';
 
 async function AnalyticsPage() {
-  const bookings = await getBookings();
-  const customers = await getCustomers();
-
-  const totalBookings = bookings.length;
-  const totalCustomers = customers.length;
-
-  const totalRevenue = bookings.reduce(
-    (sum, booking) => sum + booking.price,
-    0
-  );
-
   return (
     <div className='space-y-6 p-6'>
       <div>
@@ -29,17 +16,17 @@ async function AnalyticsPage() {
       <div className='grid gap-4 md:grid-cols-3'>
         <div className='bg-background rounded-xl border p-4'>
           <p className='text-muted-foreground text-sm'>Total Revenue</p>
-          <p className='text-2xl font-bold'>${totalRevenue}</p>
+          <p className='text-2xl font-bold'>$450</p>
         </div>
 
         <div className='bg-background rounded-xl border p-4'>
           <p className='text-muted-foreground text-sm'>Total Bookings</p>
-          <p className='text-2xl font-bold'>{totalBookings}</p>
+          <p className='text-2xl font-bold'>5</p>
         </div>
 
         <div className='bg-background rounded-xl border p-4'>
           <p className='text-muted-foreground text-sm'>Customers</p>
-          <p className='text-2xl font-bold'>{totalCustomers}</p>
+          <p className='text-2xl font-bold'>6</p>
         </div>
       </div>
 

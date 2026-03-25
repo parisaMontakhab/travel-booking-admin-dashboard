@@ -1,11 +1,14 @@
 'use client';
+
 import { ROUTES } from '@/constants/routes';
 import { Booking } from '@/types/booking';
+import { Customer } from '@/types/customer';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
 interface Props {
   bookings: Booking[];
+  customers: Customer[];
 }
 
 const getStatusClasses = (status: Booking['status']) => {
@@ -21,20 +24,25 @@ const getStatusClasses = (status: Booking['status']) => {
   }
 };
 
-export function BookingsTable({ bookings }: Props) {
+export function BookingsTable({ bookings, customers }: Props) {
   const [searchValue, setSearchValue] = useState('');
 
   const filteredBookings = useMemo(() => {
     const normalizedSearch = searchValue.toLowerCase().trim();
+
     if (!normalizedSearch) return bookings;
 
     return bookings.filter((booking) => {
+      const customer = customers.find((c) => c.id === booking.customerId);
+
+      const customerName = customer?.name.toLowerCase() ?? '';
+
       return (
-        booking.customer.toLowerCase().includes(normalizedSearch) ||
+        customerName.includes(normalizedSearch) ||
         booking.destination.toLowerCase().includes(normalizedSearch)
       );
     });
-  }, [bookings, searchValue]);
+  }, [bookings, customers, searchValue]);
 
   return (
     <div className='space-y-4'>
@@ -47,6 +55,7 @@ export function BookingsTable({ bookings }: Props) {
           className='bg-background w-full max-w-sm rounded-md border px-3 py-2 text-sm outline-none focus:ring-1'
         />
       </div>
+
       <div className='bg-background overflow-hidden rounded-xl border'>
         <table className='w-full text-sm'>
           <thead className='bg-muted/50'>
@@ -60,28 +69,37 @@ export function BookingsTable({ bookings }: Props) {
           </thead>
 
           <tbody>
-            {filteredBookings.map((booking) => (
-              <tr key={booking.id} className='border-t'>
-                <td className='px-4 py-3 font-medium'>
-                  {' '}
-                  <Link href={ROUTES.BOOKINGS.DETAIL(booking.id)}>
-                    {booking.customer}
-                  </Link>
-                </td>
-                <td className='px-4 py-3'>{booking.destination}</td>
-                <td className='px-4 py-3'>{booking.date}</td>
-                <td className='px-4 py-3'>
-                  <span
-                    className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${getStatusClasses(
-                      booking.status
-                    )}`}
-                  >
-                    {booking.status}
-                  </span>
-                </td>
-                <td className='px-4 py-3'>${booking.price}</td>
-              </tr>
-            ))}
+            {filteredBookings.map((booking) => {
+              const customer = customers.find(
+                (c) => c.id === booking.customerId
+              );
+
+              return (
+                <tr key={booking.id} className='border-t'>
+                  <td className='px-4 py-3 font-medium'>
+                    <Link href={ROUTES.BOOKINGS.DETAIL(booking.id)}>
+                      {customer?.name ?? 'Unknown customer'}
+                    </Link>
+                  </td>
+
+                  <td className='px-4 py-3'>{booking.destination}</td>
+                  <td className='px-4 py-3'>{booking.date}</td>
+
+                  <td className='px-4 py-3'>
+                    <span
+                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${getStatusClasses(
+                        booking.status
+                      )}`}
+                    >
+                      {booking.status}
+                    </span>
+                  </td>
+
+                  <td className='px-4 py-3'>${booking.price}</td>
+                </tr>
+              );
+            })}
+
             {filteredBookings.length === 0 && (
               <tr>
                 <td

@@ -1,50 +1,42 @@
 {
   "bookings": [
     {
-      "customer": "Jackson Lee",
-      "destination": "siena",
+      "customerId": "c2",
+      "destination": "Rome",
       "date": "2026-04-05",
       "price": 450,
       "status": "Confirmed",
-      "id": "aAcCd9GoZVo"
+      "id": "b1"
     },
     {
-      "customer": "Olivia Martin",
+      "id": "b2",
+      "customerId": "c1",
       "destination": "Rome",
       "date": "2026-04-07",
       "price": 250,
-      "status": "Cancelled",
-      "id": "Liw4ICxIPWk"
+      "status": "Cancelled"
     },
     {
-      "customer": "Nokhod",
-      "destination": "Milan",
-      "date": "2026-04-15",
-      "price": 1200,
-      "status": "Pending",
-      "id": "Z7BFBvGnV9E"
-    },
-    {
-      "customer": "pori",
+      "customerId": "c1",
       "destination": "Paris",
-      "date": "2026-04-14",
-      "price": 350,
+      "date": "2026-04-12",
+      "price": 400,
       "status": "Pending",
-      "id": "2I1SA2ngSTg"
+      "id": "cyqqQHTo9b8"
     }
   ],
   "customers": [
     {
-      "name": "Parisa Montakhabi Sani",
-      "email": "parisa.montakhabi@gmail.com",
-      "phone": "3516175059",
-      "id": "6FcHJj2bE5o"
+      "id": "c1",
+      "name": "Jackson Lee",
+      "email": "jackson@example.com",
+      "phone": "3516175059"
     },
     {
-      "name": "Matin kashanaki",
-      "email": "matin@gmail.com",
-      "phone": "3516174569",
-      "id": "WRDljoWpw_M"
+      "id": "c2",
+      "name": "Olivia Martin",
+      "email": "olivia@example.com",
+      "phone": "3516174569"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -6,6 +6,7 @@ import { ROUTES } from '@/constants/routes';
 import { DeleteButton } from '@/features/bookings/components/delete-button';
 import { useAppMutation } from '@/hooks/use-mutation';
 import { deleteBooking, getBookingById } from '@/services/bookings';
+import { getCustomers } from '@/services/customers';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -17,12 +18,21 @@ export default function BookingDetailsPage() {
 
   const {
     data: booking,
-    isLoading,
-    isError
+    isLoading: isLoadingBookings,
+    isError: isErrorBookings
   } = useQuery({
     queryKey: ['bookingDetail', id],
     queryFn: () => getBookingById(id ?? ''),
     enabled: !!id
+  });
+
+  const {
+    data: customers = [],
+    isLoading: isLoadingCustomers,
+    error: isErrorCustomers
+  } = useQuery({
+    queryKey: ['customers'],
+    queryFn: getCustomers
   });
 
   const { mutate: deleteBookingById, isPending } = useAppMutation({
@@ -34,6 +44,8 @@ export default function BookingDetailsPage() {
     }
   });
 
+  const customer = customers.find((c) => c.id === booking?.customerId);
+
   const handleDelete = () => {
     const confirmed = window.confirm(
       'Are you sure you want to delete this booking?'
@@ -44,11 +56,11 @@ export default function BookingDetailsPage() {
     deleteBookingById(id);
   };
 
-  if (isLoading) {
+  if (isLoadingBookings || isLoadingCustomers) {
     return <LoadingState title='Loading booking...' />;
   }
 
-  if (isError) {
+  if (isErrorBookings || isErrorCustomers) {
     return (
       <ErrorState
         title='Failed to load booking'
@@ -57,7 +69,7 @@ export default function BookingDetailsPage() {
     );
   }
 
-  if (!booking)
+  if (!booking || !customers.length)
     return (
       <EmptyState
         title='No booking yet'
@@ -84,7 +96,10 @@ export default function BookingDetailsPage() {
       <div className='space-y-4 rounded-xl border p-6'>
         <div>
           <p className='text-muted-foreground text-sm'>Customer</p>
-          <p className='font-medium'>{booking.customer}</p>
+          <p className='font-medium'>{customer?.name ?? 'Unknown customer'}</p>
+          {customer?.email && (
+            <p className='text-muted-foreground text-sm'>{customer.email}</p>
+          )}
         </div>
 
         <div>

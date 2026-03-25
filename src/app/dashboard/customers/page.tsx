@@ -4,6 +4,7 @@ import ErrorState from '@/components/states/ErrorState';
 import LoadingState from '@/components/states/LoadingState';
 import { ROUTES } from '@/constants/routes';
 import CustomersTable from '@/features/customers/components/customers-table';
+import { getBookings } from '@/services/bookings';
 import { getCustomers } from '@/services/customers';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -11,16 +12,26 @@ import Link from 'next/link';
 function CustomersPage() {
   const {
     data: customers = [],
-    isLoading,
-    isError
+    isLoading: isLoadingCustomers,
+    isError: isErrorCustomers
   } = useQuery({
     queryKey: ['customers'],
     queryFn: getCustomers
   });
 
-  if (isLoading) return <LoadingState title='Loading customers...' />;
+  const {
+    data: bookings = [],
+    isLoading: isLoadingBooking,
+    isError: isErrorBooking
+  } = useQuery({
+    queryKey: ['bookings'],
+    queryFn: getBookings
+  });
 
-  if (isError)
+  if (isLoadingCustomers || isLoadingBooking)
+    return <LoadingState title='Loading customers...' />;
+
+  if (isErrorCustomers || isErrorBooking)
     return (
       <ErrorState
         title='Failed to load customers'
@@ -28,7 +39,7 @@ function CustomersPage() {
       />
     );
 
-  if (!customers?.length)
+  if (!customers?.length || !bookings?.length)
     return (
       <EmptyState
         title='No customers yet'
@@ -53,7 +64,7 @@ function CustomersPage() {
         </Link>
       </div>
 
-      <CustomersTable customers={customers} />
+      <CustomersTable customers={customers} bookings={bookings} />
     </div>
   );
 }

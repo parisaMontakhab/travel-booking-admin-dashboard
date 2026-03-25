@@ -1,18 +1,12 @@
 export type BookingStatus = 'Confirmed' | 'Pending' | 'Cancelled';
 
 export type Booking = {
-  id: number;
-  customer: string;
+  id: string;
+  customerId: string;
   destination: string;
   date: string;
   status: BookingStatus;
   price: number;
 };
 
-export type CreateBookingPayload = {
-  customer: string;
-  destination: string;
-  date: string;
-  price: number;
-  status: 'Confirmed' | 'Pending' | 'Cancelled';
-};
+export type CreateBookingPayload = Omit<Booking, 'id'>;
