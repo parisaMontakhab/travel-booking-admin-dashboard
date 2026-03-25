@@ -9,19 +9,19 @@
       "id": "b1"
     },
     {
-      "id": "b2",
       "customerId": "c1",
       "destination": "Rome",
       "date": "2026-04-07",
       "price": 250,
-      "status": "Cancelled"
+      "status": "Confirmed",
+      "id": "b2"
     },
     {
       "customerId": "c1",
       "destination": "Paris",
       "date": "2026-04-12",
       "price": 400,
-      "status": "Pending",
+      "status": "Confirmed",
       "id": "cyqqQHTo9b8"
     },
     {
@@ -37,7 +37,7 @@
     {
       "name": "Jackson Lee",
       "email": "jackson@example.com",
-      "phone": "3516175050",
+      "phone": "3516175057",
       "id": "c1"
     },
     {

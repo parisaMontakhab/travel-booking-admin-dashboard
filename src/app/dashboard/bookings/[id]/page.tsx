@@ -69,7 +69,7 @@ export default function BookingDetailsPage() {
     );
   }
 
-  if (!booking || !customers.length)
+  if (!booking)
     return (
       <EmptyState
         title='No booking yet'
