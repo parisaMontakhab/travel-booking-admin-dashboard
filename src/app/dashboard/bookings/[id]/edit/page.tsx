@@ -8,9 +8,10 @@ import {
   CreateBookingForm,
   createBookingSchema
 } from '@/features/bookings/schema';
+import { useAppMutation } from '@/hooks/use-mutation';
 import { getBookingById, updateBooking } from '@/services/bookings';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -58,17 +59,17 @@ function EditBookingPage() {
     }
   }, [booking, reset]);
 
-  const { mutate } = useMutation({
+  const { mutate: editBooking } = useAppMutation({
     mutationFn: (data: CreateBookingForm) => updateBooking(id, data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['bookings'] });
       await queryClient.invalidateQueries({ queryKey: ['bookingDetail', id] });
-      router.push(ROUTES.BOOKINGS.DETAIL(id));
+      router.push(ROUTES.BOOKINGS.LIST);
     }
   });
 
   const onSubmit = async (data: CreateBookingForm) => {
-    mutate(data);
+    editBooking(data);
   };
 
   if (isLoading) return <LoadingState title='Loading booking...' />;

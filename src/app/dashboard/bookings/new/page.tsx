@@ -5,9 +5,10 @@ import {
   CreateBookingForm,
   createBookingSchema
 } from '@/features/bookings/schema';
+import { useAppMutation } from '@/hooks/use-mutation';
 import { createBooking } from '@/services/bookings';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
@@ -30,8 +31,8 @@ export default function NewBookingPage() {
     }
   });
 
-  const { mutate } = useMutation({
-    mutationFn: (data: CreateBookingForm) => createBooking(data),
+  const { mutate: createNewBooking } = useAppMutation({
+    mutationFn: createBooking,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['bookings'] });
       router.push(ROUTES.BOOKINGS.LIST);
@@ -39,7 +40,7 @@ export default function NewBookingPage() {
   });
 
   const onSubmit = (data: CreateBookingForm) => {
-    mutate(data);
+    createNewBooking(data);
   };
 
   return (

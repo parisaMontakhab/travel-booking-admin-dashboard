@@ -1,19 +1,11 @@
 {
   "bookings": [
     {
-      "customer": "matin",
-      "destination": "Paris",
-      "date": "2026-04-04",
-      "price": 1200,
-      "status": "Pending",
-      "id": "wDeFewuSxYY"
-    },
-    {
       "customer": "Jackson Lee",
       "destination": "siena",
       "date": "2026-04-05",
-      "price": 350,
-      "status": "Pending",
+      "price": 450,
+      "status": "Confirmed",
       "id": "aAcCd9GoZVo"
     },
     {
@@ -23,6 +15,22 @@
       "price": 250,
       "status": "Cancelled",
       "id": "Liw4ICxIPWk"
+    },
+    {
+      "customer": "Nokhod",
+      "destination": "Milan",
+      "date": "2026-04-15",
+      "price": 1200,
+      "status": "Pending",
+      "id": "Z7BFBvGnV9E"
+    },
+    {
+      "customer": "pori",
+      "destination": "Paris",
+      "date": "2026-04-14",
+      "price": 350,
+      "status": "Pending",
+      "id": "2I1SA2ngSTg"
     }
   ],
   "customers": [

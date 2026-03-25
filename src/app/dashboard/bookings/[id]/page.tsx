@@ -4,8 +4,9 @@ import ErrorState from '@/components/states/ErrorState';
 import LoadingState from '@/components/states/LoadingState';
 import { ROUTES } from '@/constants/routes';
 import { DeleteButton } from '@/features/bookings/components/delete-button';
+import { useAppMutation } from '@/hooks/use-mutation';
 import { deleteBooking, getBookingById } from '@/services/bookings';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
@@ -24,11 +25,10 @@ export default function BookingDetailsPage() {
     enabled: !!id
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: deleteBookingById, isPending } = useAppMutation({
     mutationFn: (id: string) => deleteBooking(id),
 
     onSuccess: () => {
-      console.log('delete success');
       queryClient.invalidateQueries({ queryKey: ['bookings'] });
       router.push(ROUTES.BOOKINGS.LIST);
     }
@@ -40,10 +40,8 @@ export default function BookingDetailsPage() {
     );
 
     if (!confirmed) return;
-    console.log('id from params:', id);
-    console.log('Number(id):', Number(id));
 
-    mutate(id);
+    deleteBookingById(id);
   };
 
   if (isLoading) {
