@@ -1,14 +1,6 @@
 {
   "bookings": [
     {
-      "customer": "parisa",
-      "destination": "Rome",
-      "date": "2026-04-01",
-      "price": 250,
-      "status": "Confirmed",
-      "id": "N4jMLPYLXtg"
-    },
-    {
       "customer": "matin",
       "destination": "Paris",
       "date": "2026-04-04",
@@ -29,7 +21,7 @@
       "destination": "Rome",
       "date": "2026-04-07",
       "price": 250,
-      "status": "Confirmed",
+      "status": "Cancelled",
       "id": "Liw4ICxIPWk"
     }
   ],
@@ -45,12 +37,6 @@
       "email": "matin@gmail.com",
       "phone": "3516174567",
       "id": "WRDljoWpw_M"
-    },
-    {
-      "name": "Poria sani",
-      "email": "sani@gmail.com",
-      "phone": "3514567980",
-      "id": "iMrEWAkboKI"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

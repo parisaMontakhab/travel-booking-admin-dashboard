@@ -25,9 +25,10 @@ export default function BookingDetailsPage() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (id: number) => deleteBooking(id),
+    mutationFn: (id: string) => deleteBooking(id),
 
     onSuccess: () => {
+      console.log('delete success');
       queryClient.invalidateQueries({ queryKey: ['bookings'] });
       router.push(ROUTES.BOOKINGS.LIST);
     }
@@ -39,8 +40,10 @@ export default function BookingDetailsPage() {
     );
 
     if (!confirmed) return;
+    console.log('id from params:', id);
+    console.log('Number(id):', Number(id));
 
-    mutate(Number(id));
+    mutate(id);
   };
 
   if (isLoading) {

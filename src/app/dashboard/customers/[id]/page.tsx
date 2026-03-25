@@ -25,7 +25,7 @@ export default function CustomerDetailsPage() {
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (id: number) => deleteCustomer(id),
+    mutationFn: (id: string) => deleteCustomer(id),
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['customers'] });
@@ -40,7 +40,7 @@ export default function CustomerDetailsPage() {
 
     if (!confirmed) return;
 
-    mutate(Number(id));
+    mutate(id);
   };
 
   if (isLoading) {
