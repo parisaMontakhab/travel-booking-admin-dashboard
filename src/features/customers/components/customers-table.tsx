@@ -1,26 +1,49 @@
 import { ROUTES } from '@/constants/routes';
+import { Booking } from '@/types/booking';
 import { Customer } from '@/types/customer';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
 interface Props {
   customers: Customer[];
+  bookings: Booking[];
 }
 
-function CustomersTable({ customers }: Props) {
+function CustomersTable({ customers, bookings }: Props) {
   const [searchValue, setSearchValue] = useState('');
+
+  const customersWithStats = useMemo(() => {
+    return customers.map((customer) => {
+      const customerBookings = bookings.filter(
+        (booking) => booking.customerId === customer.id
+      );
+
+      const totalBookings = customerBookings.length;
+
+      const totalSpent = customerBookings.reduce((sum, booking) => {
+        return sum + booking.price;
+      }, 0);
+
+      return {
+        ...customer,
+        totalBookings,
+        totalSpent
+      };
+    });
+  }, [customers, bookings]);
 
   const filteredCustomers = useMemo(() => {
     const normalizedSearch = searchValue.toLowerCase().trim();
-    if (!normalizedSearch) return customers;
 
-    return customers.filter((customer) => {
+    if (!normalizedSearch) return customersWithStats;
+
+    return customersWithStats.filter((customer) => {
       return (
         customer.name.toLowerCase().includes(normalizedSearch) ||
-        customer.email.toLocaleLowerCase().includes(normalizedSearch)
+        customer.email.toLowerCase().includes(normalizedSearch)
       );
     });
-  }, [customers, searchValue]);
+  }, [customersWithStats, searchValue]);
 
   return (
     <div className='space-y-4'>
@@ -40,6 +63,8 @@ function CustomersTable({ customers }: Props) {
               <th className='px-4 py-3 font-medium'>Name</th>
               <th className='px-4 py-3 font-medium'>Email</th>
               <th className='px-4 py-3 font-medium'>Phone</th>
+              <th className='px-4 py-3 font-medium'>Bookings</th>
+              <th className='px-4 py-3 font-medium'>Total Spent</th>
             </tr>
           </thead>
 
@@ -54,6 +79,8 @@ function CustomersTable({ customers }: Props) {
 
                 <td className='px-4 py-3'>{customer.email}</td>
                 <td className='px-4 py-3'>{customer.phone}</td>
+                <td className='px-4 py-3'>{customer.totalBookings}</td>
+                <td className='px-4 py-3'>${customer.totalSpent}</td>
               </tr>
             ))}
             {filteredCustomers.length === 0 && (

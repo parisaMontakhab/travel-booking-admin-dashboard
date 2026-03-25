@@ -23,20 +23,34 @@
       "price": 400,
       "status": "Pending",
       "id": "cyqqQHTo9b8"
+    },
+    {
+      "customerId": "IMNhUpZ4Uf8",
+      "destination": "torino",
+      "date": "2026-05-21",
+      "price": 1200,
+      "status": "Confirmed",
+      "id": "LSN1geS4Xc8"
     }
   ],
   "customers": [
     {
-      "id": "c1",
       "name": "Jackson Lee",
       "email": "jackson@example.com",
-      "phone": "3516175059"
+      "phone": "3516175050",
+      "id": "c1"
     },
     {
       "id": "c2",
       "name": "Olivia Martin",
       "email": "olivia@example.com",
       "phone": "3516174569"
+    },
+    {
+      "name": "Parisa Montakhabi Sani",
+      "email": "parisa.montakhabi@gmail.com",
+      "phone": "3516175059",
+      "id": "IMNhUpZ4Uf8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
