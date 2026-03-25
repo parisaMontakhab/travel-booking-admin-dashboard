@@ -4,10 +4,11 @@ import {
   CreateCustomerForm,
   createCustomerSchema
 } from '@/features/customers/schema';
+import { useAppMutation } from '@/hooks/use-mutation';
 
 import { createCustomer } from '@/services/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
@@ -28,7 +29,7 @@ export default function NewCustomerPage() {
     }
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: createNewCustomer, isPending } = useAppMutation({
     mutationFn: (data: CreateCustomerForm) => createCustomer(data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['customers'] });
@@ -37,7 +38,7 @@ export default function NewCustomerPage() {
   });
 
   const onSubmit = async (data: CreateCustomerForm) => {
-    mutate(data);
+    createNewCustomer(data);
   };
 
   return (

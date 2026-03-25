@@ -4,8 +4,9 @@ import ErrorState from '@/components/states/ErrorState';
 import LoadingState from '@/components/states/LoadingState';
 import { ROUTES } from '@/constants/routes';
 import { DeleteButton } from '@/features/bookings/components/delete-button';
+import { useAppMutation } from '@/hooks/use-mutation';
 import { deleteCustomer, getCustomerById } from '@/services/customers';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
@@ -24,7 +25,7 @@ export default function CustomerDetailsPage() {
     enabled: !!id
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: deletedCustomerById, isPending } = useAppMutation({
     mutationFn: (id: string) => deleteCustomer(id),
 
     onSuccess: () => {
@@ -40,7 +41,7 @@ export default function CustomerDetailsPage() {
 
     if (!confirmed) return;
 
-    mutate(id);
+    deletedCustomerById(id);
   };
 
   if (isLoading) {

@@ -7,10 +7,11 @@ import {
   CreateCustomerForm,
   createCustomerSchema
 } from '@/features/customers/schema';
+import { useAppMutation } from '@/hooks/use-mutation';
 
 import { getCustomerById, updateCustomer } from '@/services/customers';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -54,7 +55,7 @@ export default function EditCustomerPage() {
     }
   }, [customer, reset]);
 
-  const { mutate, isPending } = useMutation({
+  const { mutate: editCustomer, isPending } = useAppMutation({
     mutationFn: (data: CreateCustomerForm) => updateCustomer(id, data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['customer'] });
@@ -64,7 +65,7 @@ export default function EditCustomerPage() {
   });
 
   const onSubmit = async (data: CreateCustomerForm) => {
-    mutate(data);
+    editCustomer(data);
   };
 
   if (isLoading) return <LoadingState title='Loading customer...' />;
