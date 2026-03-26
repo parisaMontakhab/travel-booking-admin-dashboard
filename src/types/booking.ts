@@ -2,7 +2,7 @@ export type BookingStatus = 'Confirmed' | 'Pending' | 'Cancelled';
 
 export type Booking = {
   id: string;
-  customerId: string;
+  customer_id: string;
   destination: string;
   date: string;
   status: BookingStatus;

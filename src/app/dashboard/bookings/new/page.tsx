@@ -24,7 +24,7 @@ export default function NewBookingPage() {
   } = useForm<CreateBookingForm>({
     resolver: zodResolver(createBookingSchema),
     defaultValues: {
-      customerId: '',
+      customer_id: '',
       destination: '',
       date: '',
       price: 0,
@@ -56,7 +56,7 @@ export default function NewBookingPage() {
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
         <div>
           <select
-            {...register('customerId')}
+            {...register('customer_id')}
             disabled={isLoading}
             className='w-full rounded-lg border p-2'
           >
@@ -71,8 +71,8 @@ export default function NewBookingPage() {
             ))}
           </select>
 
-          {errors.customerId && (
-            <p className='text-sm text-red-500'>{errors.customerId.message}</p>
+          {errors.customer_id && (
+            <p className='text-sm text-red-500'>{errors.customer_id.message}</p>
           )}
         </div>
 

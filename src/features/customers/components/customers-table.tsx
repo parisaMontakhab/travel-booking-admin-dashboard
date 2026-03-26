@@ -15,7 +15,7 @@ function CustomersTable({ customers, bookings }: Props) {
   const customersWithStats = useMemo(() => {
     return customers.map((customer) => {
       const customerBookings = bookings.filter(
-        (booking) => booking.customerId === customer.id
+        (booking) => booking.customer_id === customer.id
       );
 
       const totalBookings = customerBookings.length;

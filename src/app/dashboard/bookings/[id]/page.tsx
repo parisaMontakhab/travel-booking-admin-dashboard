@@ -44,7 +44,7 @@ export default function BookingDetailsPage() {
     }
   });
 
-  const customer = customers.find((c) => c.id === booking?.customerId);
+  const customer = customers.find((c) => c.id === booking?.customer_id);
 
   const handleDelete = () => {
     const confirmed = window.confirm(

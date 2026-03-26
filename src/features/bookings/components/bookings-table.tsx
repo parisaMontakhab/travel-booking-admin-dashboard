@@ -33,7 +33,7 @@ export function BookingsTable({ bookings, customers }: Props) {
     if (!normalizedSearch) return bookings;
 
     return bookings.filter((booking) => {
-      const customer = customers.find((c) => c.id === booking.customerId);
+      const customer = customers.find((c) => c.id === booking.customer_id);
 
       const customerName = customer?.name.toLowerCase() ?? '';
 
@@ -71,7 +71,7 @@ export function BookingsTable({ bookings, customers }: Props) {
           <tbody>
             {filteredBookings.map((booking) => {
               const customer = customers.find(
-                (c) => c.id === booking.customerId
+                (c) => c.id === booking.customer_id
               );
 
               return (
