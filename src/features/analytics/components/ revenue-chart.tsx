@@ -1,5 +1,7 @@
 'use client';
 
+import { Booking } from '@/types/booking';
+import { useMemo } from 'react';
 import {
   CartesianGrid,
   Line,
@@ -10,20 +12,34 @@ import {
   YAxis
 } from 'recharts';
 
-const data = [
-  { month: 'Jan', revenue: 1200 },
-  { month: 'Feb', revenue: 1800 },
-  { month: 'Mar', revenue: 1500 },
-  { month: 'Apr', revenue: 2200 },
-  { month: 'May', revenue: 2600 },
-  { month: 'Jun', revenue: 2100 }
-];
+interface Props {
+  bookings: Booking[];
+}
 
-function RevenueChart() {
+function RevenueChart({ bookings }: Props) {
+  const revenueData = useMemo(() => {
+    const monthMap: Record<string, number> = {};
+
+    bookings.forEach((booking) => {
+      const date = new Date(booking.date);
+
+      const month = date.toLocaleString('en-US', {
+        month: 'short'
+      });
+
+      monthMap[month] = (monthMap[month] || 0) + booking.price;
+    });
+
+    return Object.entries(monthMap).map(([month, revenue]) => ({
+      month,
+      revenue
+    }));
+  }, [bookings]);
+
   return (
     <div className='h-64 w-full'>
       <ResponsiveContainer width='100%' height='100%'>
-        <LineChart data={data}>
+        <LineChart data={revenueData}>
           <CartesianGrid strokeDasharray='3 3' />
 
           <XAxis dataKey='month' />

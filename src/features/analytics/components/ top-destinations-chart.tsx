@@ -1,5 +1,7 @@
 'use client';
 
+import { Booking } from '@/types/booking';
+import { useMemo } from 'react';
 import {
   Bar,
   BarChart,
@@ -10,18 +12,30 @@ import {
   YAxis
 } from 'recharts';
 
-const data = [
-  { destination: 'Paris', bookings: 5 },
-  { destination: 'Rome', bookings: 3 },
-  { destination: 'Barcelona', bookings: 2 },
-  { destination: 'Amsterdam', bookings: 1 }
-];
+interface Props {
+  bookings: Booking[];
+}
+function TopDestinationsChart({ bookings }: Props) {
+  const destinationData = useMemo(() => {
+    const destinationMap: Record<string, number> = {};
+    bookings.forEach((booking) => {
+      const destination = booking.destination;
+      destinationMap[destination] = (destinationMap[destination] || 0) + 1;
+    });
 
-function TopDestinationsChart() {
+    return Object.entries(destinationMap)
+      .map(([destination, count]) => ({
+        destination,
+        bookings: count
+      }))
+      .sort((a, b) => b.bookings - a.bookings)
+      .slice(0, 5);
+  }, [bookings]);
+
   return (
-    <div className='h-64 w-full'>
-      <ResponsiveContainer width='100%' height='100%'>
-        <BarChart data={data}>
+    <div className='flex h-64 w-full items-center justify-center'>
+      <ResponsiveContainer width='50%' height='100%'>
+        <BarChart data={destinationData}>
           <CartesianGrid strokeDasharray='3 3' />
 
           <XAxis dataKey='destination' />
