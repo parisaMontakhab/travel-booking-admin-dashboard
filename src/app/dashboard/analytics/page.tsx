@@ -34,7 +34,8 @@ function AnalyticsPage() {
     .map((booking) => booking.price)
     .reduce((a, b) => {
       return a + b;
-    }, 0);
+    }, 0)
+    .toLocaleString();
 
   const totalCustomers = customers.length;
 
