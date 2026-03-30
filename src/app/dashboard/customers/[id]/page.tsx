@@ -36,7 +36,7 @@ export default function CustomerDetailsPage() {
   });
 
   const customerBookings = bookings.filter(
-    (booking) => booking.customerId === customer?.id
+    (booking) => booking.customer_id === customer?.id
   );
 
   const totalBookings = customerBookings.length;
@@ -86,14 +86,14 @@ export default function CustomerDetailsPage() {
     );
   }
   return (
-    <div className='space-y-6 p-6'>
-      <div className='flex items-center justify-between'>
-        <h1 className='text-2xl font-bold'>{customer.name}</h1>
+    <div className='space-y-6 p-4 md:p-6'>
+      <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
+        <h1 className='text-2xl font-bold break-words'>{customer.name}</h1>
 
-        <div className='flex gap-3'>
+        <div className='flex flex-col gap-2 sm:flex-row sm:gap-3'>
           <Link
             href={ROUTES.CUSTOMERS.EDIT(customer.id)}
-            className='rounded-lg bg-black px-6 py-2 text-white'
+            className='rounded-lg bg-black px-6 py-2 text-center text-white'
           >
             Edit
           </Link>
@@ -102,10 +102,10 @@ export default function CustomerDetailsPage() {
         </div>
       </div>
 
-      <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-4'>
+      <div className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
         <div className='rounded-xl border p-4'>
           <p className='text-muted-foreground text-sm'>Email</p>
-          <p className='font-medium'>{customer.email}</p>
+          <p className='font-medium break-all'>{customer.email}</p>
         </div>
 
         <div className='rounded-xl border p-4'>
@@ -134,31 +134,50 @@ export default function CustomerDetailsPage() {
             No bookings found for this customer.
           </div>
         ) : (
-          <table className='w-full text-sm'>
-            <thead className='bg-muted/50'>
-              <tr className='text-left'>
-                <th className='px-4 py-3 font-medium'>Destination</th>
-                <th className='px-4 py-3 font-medium'>Date</th>
-                <th className='px-4 py-3 font-medium'>Status</th>
-                <th className='px-4 py-3 font-medium'>Price</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {customerBookings.map((booking) => (
-                <tr key={booking.id} className='border-t'>
-                  <td className='px-4 py-3'>
-                    <Link href={ROUTES.BOOKINGS.DETAIL(booking.id)}>
-                      {booking.destination}
-                    </Link>
-                  </td>
-                  <td className='px-4 py-3'>{booking.date}</td>
-                  <td className='px-4 py-3'>{booking.status}</td>
-                  <td className='px-4 py-3'>${booking.price}</td>
+          <div className='w-full overflow-x-auto'>
+            <table className='w-full min-w-[600px] text-sm'>
+              <thead className='bg-muted/50'>
+                <tr className='text-left'>
+                  <th className='px-4 py-3 font-medium whitespace-nowrap'>
+                    Destination
+                  </th>
+                  <th className='px-4 py-3 font-medium whitespace-nowrap'>
+                    Date
+                  </th>
+                  <th className='px-4 py-3 font-medium whitespace-nowrap'>
+                    Status
+                  </th>
+                  <th className='px-4 py-3 font-medium whitespace-nowrap'>
+                    Price
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {customerBookings.map((booking) => (
+                  <tr key={booking.id} className='border-t'>
+                    <td className='px-4 py-3 whitespace-nowrap'>
+                      <Link href={ROUTES.BOOKINGS.DETAIL(booking.id)}>
+                        {booking.destination}
+                      </Link>
+                    </td>
+
+                    <td className='px-4 py-3 whitespace-nowrap'>
+                      {booking.date}
+                    </td>
+
+                    <td className='px-4 py-3 whitespace-nowrap'>
+                      {booking.status}
+                    </td>
+
+                    <td className='px-4 py-3 whitespace-nowrap'>
+                      ${booking.price}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

@@ -78,13 +78,14 @@ export default function BookingDetailsPage() {
     );
 
   return (
-    <div className='space-y-6 p-6'>
-      <div className='flex items-center justify-between'>
-        <h1 className='text-2xl font-bold'>Booking #{booking.id}</h1>
-        <div className='flex gap-3'>
+    <div className='space-y-6 p-4 md:p-6'>
+      <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
+        <h1 className='text-2xl font-bold break-words'>{customer?.name}</h1>
+
+        <div className='flex flex-col gap-2 sm:flex-row sm:gap-3'>
           <Link
             href={ROUTES.BOOKINGS.EDIT(booking.id)}
-            className='rounded-lg bg-black px-6 py-2 text-white'
+            className='rounded-lg bg-black px-6 py-2 text-center text-white'
           >
             Edit
           </Link>
@@ -93,18 +94,21 @@ export default function BookingDetailsPage() {
         </div>
       </div>
 
-      <div className='space-y-4 rounded-xl border p-6'>
+      <div className='space-y-4 rounded-xl border p-4 md:p-6'>
         <div>
           <p className='text-muted-foreground text-sm'>Customer</p>
           <p className='font-medium'>{customer?.name ?? 'Unknown customer'}</p>
+
           {customer?.email && (
-            <p className='text-muted-foreground text-sm'>{customer.email}</p>
+            <p className='text-muted-foreground text-sm break-all'>
+              {customer.email}
+            </p>
           )}
         </div>
 
         <div>
           <p className='text-muted-foreground text-sm'>Destination</p>
-          <p className='font-medium'>{booking.destination}</p>
+          <p className='font-medium break-words'>{booking.destination}</p>
         </div>
 
         <div>

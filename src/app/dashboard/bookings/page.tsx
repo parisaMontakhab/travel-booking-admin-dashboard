@@ -59,7 +59,7 @@ export default function BookingsPage() {
 
         <Link
           href={ROUTES.BOOKINGS.NEW}
-          className='rounded-lg bg-black px-4 py-2 text-white'
+          className='rounded-lg bg-black p-2 text-white md:px-4 md:py-2'
         >
           New Booking
         </Link>

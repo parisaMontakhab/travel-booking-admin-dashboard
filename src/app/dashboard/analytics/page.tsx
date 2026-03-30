@@ -77,15 +77,15 @@ function AnalyticsPage() {
           <RevenueChart bookings={bookings} />
         </div>
       </div>
-      <div className='flex w-full flex-row items-center justify-between gap-4'>
+      <div className='flex w-full flex-col items-center justify-between gap-4 md:flex-row'>
         {/* Booking status */}
-        <div className='bg-background w-full rounded-xl border p-6'>
+        <div className='bg-background w-full rounded-xl border p-2 md:p-6'>
           <p className='text-muted-foreground mb-2 text-sm'>Booking Status</p>
           <BookingStatusChart bookings={bookings} />
         </div>
 
         {/* Top destination  */}
-        <div className='bg-background w-full rounded-xl border p-6'>
+        <div className='bg-background w-full rounded-xl border p-2 md:p-6'>
           <p className='text-muted-foreground mb-2 text-sm'>Top Destinations</p>
 
           <TopDestinationsChart bookings={bookings} />

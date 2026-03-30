@@ -56,45 +56,70 @@ function CustomersTable({ customers, bookings }: Props) {
           className='bg-background w-full max-w-sm rounded-md border px-3 py-2 text-sm outline-none focus:ring-1'
         />
       </div>
+
       <div className='bg-background overflow-hidden rounded-xl border'>
-        <table className='w-full text-sm'>
-          <thead className='bg-muted/50'>
-            <tr className='text-left'>
-              <th className='px-4 py-3 font-medium'>Name</th>
-              <th className='px-4 py-3 font-medium'>Email</th>
-              <th className='px-4 py-3 font-medium'>Phone</th>
-              <th className='px-4 py-3 font-medium'>Bookings</th>
-              <th className='px-4 py-3 font-medium'>Total Spent</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredCustomers.map((customer) => (
-              <tr key={customer.id} className='border-t'>
-                <td className='px-4 py-3 font-medium'>
-                  <Link href={ROUTES.CUSTOMERS.DETAIL(customer.id)}>
-                    {customer.name}
-                  </Link>
-                </td>
-
-                <td className='px-4 py-3'>{customer.email}</td>
-                <td className='px-4 py-3'>{customer.phone}</td>
-                <td className='px-4 py-3'>{customer.totalBookings}</td>
-                <td className='px-4 py-3'>${customer.totalSpent}</td>
+        <div className='w-full overflow-x-auto'>
+          <table className='w-full min-w-[750px] text-sm'>
+            <thead className='bg-muted/50'>
+              <tr className='text-left'>
+                <th className='px-4 py-3 font-medium whitespace-nowrap'>
+                  Name
+                </th>
+                <th className='px-4 py-3 font-medium whitespace-nowrap'>
+                  Email
+                </th>
+                <th className='px-4 py-3 font-medium whitespace-nowrap'>
+                  Phone
+                </th>
+                <th className='px-4 py-3 font-medium whitespace-nowrap'>
+                  Bookings
+                </th>
+                <th className='px-4 py-3 font-medium whitespace-nowrap'>
+                  Total Spent
+                </th>
               </tr>
-            ))}
-            {filteredCustomers.length === 0 && (
-              <tr>
-                <td
-                  colSpan={5}
-                  className='text-muted-foreground px-4 py-6 text-center'
-                >
-                  No customers found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {filteredCustomers.map((customer) => (
+                <tr key={customer.id} className='border-t'>
+                  <td className='px-4 py-3 font-medium whitespace-nowrap'>
+                    <Link href={ROUTES.CUSTOMERS.DETAIL(customer.id)}>
+                      {customer.name}
+                    </Link>
+                  </td>
+
+                  <td className='px-4 py-3 whitespace-nowrap'>
+                    {customer.email}
+                  </td>
+
+                  <td className='px-4 py-3 whitespace-nowrap'>
+                    {customer.phone}
+                  </td>
+
+                  <td className='px-4 py-3 whitespace-nowrap'>
+                    {customer.totalBookings}
+                  </td>
+
+                  <td className='px-4 py-3 whitespace-nowrap'>
+                    ${customer.totalSpent}
+                  </td>
+                </tr>
+              ))}
+
+              {filteredCustomers.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className='text-muted-foreground px-4 py-6 text-center'
+                  >
+                    No customers found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
