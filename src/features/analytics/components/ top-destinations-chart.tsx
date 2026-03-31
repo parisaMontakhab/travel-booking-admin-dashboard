@@ -35,7 +35,7 @@ function TopDestinationsChart({ bookings }: Props) {
   return (
     <div className='flex h-64 w-full items-center justify-center'>
       <ResponsiveContainer width='50%' height='100%'>
-        <BarChart data={destinationData}>
+        <BarChart data={destinationData} className='capitalize'>
           <CartesianGrid strokeDasharray='3 3' />
 
           <XAxis dataKey='destination' />

@@ -39,7 +39,7 @@ function RevenueChart({ bookings }: Props) {
   return (
     <div className='h-64 w-full'>
       <ResponsiveContainer width='100%' height='100%'>
-        <LineChart data={revenueData}>
+        <LineChart data={revenueData} className='capitalize'>
           <CartesianGrid strokeDasharray='3 3' />
 
           <XAxis dataKey='month' />
