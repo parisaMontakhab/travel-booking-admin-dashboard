@@ -402,7 +402,7 @@ export default function ReviewPage() {
             <Card>
               <CardHeader>
                 <CardDescription>Top Destination</CardDescription>
-                <CardTitle className='text-2xl font-semibold'>
+                <CardTitle className='text-2xl font-semibold capitalize'>
                   {topDestination.destination}
                 </CardTitle>
               </CardHeader>
